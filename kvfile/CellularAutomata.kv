@@ -1,0 +1,203 @@
+Gerenciador:
+    MainMenu:
+        name:'MainMenu'
+    GameOfLife:
+        name:'GameOfLife'
+    SquareLife:
+        name:'SquareLife'
+    HexagonLife:
+        name:'HexagonLife'
+    Sandpile:
+        name:'Sandpile'
+    SandpileSimulation:
+        name:'SandpileSimulation'
+
+<MainMenu>:
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            padding: 10
+            orientation: 'vertical'
+            Label:
+                text_size: self.size
+                text:'     Os autómatos celulares são um modelo discreto de computação que consiste em uma grade de células cujos possíveis estados são finitos, onde a partir dessa grade podemos definir uma regra de vizinhança que a cada iteração pega o estado inicial(input) das células e gera um novo estado(output) que então se tornará o novo estado inicial.'
+            Label:
+                text_size: self.size
+                text:'     O que torna o modelo de autómatos celulares tão interessantes é que a partir dele podemos exibir um comportamento complexo a partir de regras simples. Possibilitando assim que ao definir as regras de vizinhança o sistema seja capaz de simular diversos modelos das mais diversas áreas, até mesmo gerar sistemas que sejam considerados Turing-complete(capaz de gerar qualquer máquina de Turing)'
+            Label:
+                text_size: self.size
+                text:'     Utilizamos deste modelo para implementar o jogo da vida de Conway e um jogo com uma grade hexagonal em que o jogador escolhe as regras. (o modelo de sandpile não foi implementado.)'
+        BoxLayout:
+            size_hint: 1,None
+            height: root.height*0.30
+            padding: 10
+            spacing: 10
+            Button:
+                text:'Sandpile'
+                on_release: app.root.current = 'Sandpile'
+            Button:
+                text:'Game Of Life'
+                on_release: app.root.current = 'GameOfLife'
+
+<GameOfLife>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text:'John Horton Conway criou um dos autômatos mais famosos de todos os tempos, o Jogo da Vida. Para jogar vá para square life'
+        Label:
+            text:'Hexagon life é um autômato celular de grade hexagonal que você pode escolher as regras de vizinhança que quiser e ver no que da.'
+        BoxLayout:
+            Button:
+                text:'Square Life'
+                on_release: app.root.current = 'SquareLife'
+            Button:
+                text:'Hexagon Life'
+                on_release: app.root.current = 'HexagonLife'
+<SquareLife>:
+<SquareMenu>:
+    orientation: 'vertical'
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            font_size:32
+            text:'Regras do jogo da vida:'
+        Label:
+            text:'1-Uma célula viva com 2 ou 3 vizinhos, permanece viva;'
+        Label:
+            text:'2-Uma célula viva com 1 ou 0 vizinhos, morre de solidão;'
+        Label:
+            text:'3-Uma célula viva com 4 ou mais vizinhos, morre sufocada;'
+        Label:
+            text:'4-Uma célula morta com exatamente 3 vizinhos vivos, renasce.'
+    BoxLayout:
+        padding: 30
+        orientation: 'vertical'
+        Label:
+            text:'Se quiser gerar um interessante ja descoberto vá para templates.'
+        Label:
+            text:'Se quiser um mundo limpo escolha o tamanho (x,y) do mundo a ser gerado separado por virgula:'
+        BoxLayout:
+            TextInput:
+                id:SizeSquare
+            Button:
+                text:'gerar mundo vazio'
+                on_release: root.GenClearWorld()
+    Button:
+        text:'Templates'
+        on_release: root.GenTemplate()
+<SquareTemplates>:
+    orientation:'vertical'
+    Button:
+        text:'Spacefiller_1'
+        on_release: root.RunTemplate("Spacefiller_1")
+    Button:
+        text:'dart'
+        on_release: root.RunTemplate("Dart")
+    Button:
+        text:'Gosper glider gun'
+        on_release: root.RunTemplate("Gosper_glider_gun")
+    Button:
+        text:'Octagon 4'
+        on_release: root.RunTemplate("Octagon_4")
+    Button:
+        text:'Blinker puffer 1'
+        on_release: root.RunTemplate("Blinker_puffer_1")
+<InSimulationOptions>:
+    size_hint:1,None
+    height:50
+    padding:5
+    spacing:5
+    Button:
+        text:'limpar'
+        on_release: root.Clear()
+    Button:
+        text:'acelerar'
+        on_release: root.speed()
+    Button:
+        text:'desacelerar'
+        on_release: root.slow()
+    Button:
+        text:'rodar'
+        on_release: root.run()
+
+<HexagonLife>: 
+<HexagonMenu>:
+    orientation: 'vertical'
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            font_size:32
+            text:'Hexagon Life'
+        Label:
+            text:'Escolha as regras de vizinhança que quiser, com quantos vizinhos uma célula sobrevive ou nasce.'
+        Label:
+            text:'Nem todas as regras caracterizam um jogo da vida mas podem ser interessantes.(3,5/2 é GL)'
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                Label:
+                    text:'sobrevive:'
+                BoxLayout:
+                    id:survivebtns
+                    ToggleButton:
+                        text:'0'
+                    ToggleButton:
+                        text:'1'
+                    ToggleButton:
+                        text:'2'
+                    ToggleButton:
+                        text:'3'
+                    ToggleButton:
+                        text:'4'
+                    ToggleButton:
+                        text:'5'
+                    ToggleButton:
+                        text:'6'
+            BoxLayout:
+                Label:
+                    text:'nasce:'
+                BoxLayout:
+                    id:bornbtns
+                    ToggleButton:
+                        text:'0'
+                    ToggleButton:
+                        text:'1'
+                    ToggleButton:
+                        text:'2'
+                    ToggleButton:
+                        text:'3'
+                    ToggleButton:
+                        text:'4'
+                    ToggleButton:
+                        text:'5'
+                    ToggleButton:
+                        text:'6'
+        Label:
+            text:'para gerar um mundo limpo escolha o tamanho (x,y) do mundo a ser gerado separado por virgula:'
+        BoxLayout:
+            TextInput:
+                id:SizeHexagon
+            Button:
+                text:'gerar mundo vazio'
+                on_release: root.GenClearWorld()
+    BoxLayout:
+        Label:
+            text:'(NÃO TEM TEMPLATES, NÃO DEU TEMPO KKKKKK)'
+        Button:
+            text:'Templates'
+
+<HexagonTemplates>:      
+<Sandpile>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text:'Sandpile esta em processo de decisao'
+        BoxLayout:
+            Button:
+                text:'Sandpile Simulate'
+                on_release: app.root.current = 'SandpileSimulation'      
+<SandpileSimulation>:
+    Label:
+        text:'nada aqui por enquanto'
